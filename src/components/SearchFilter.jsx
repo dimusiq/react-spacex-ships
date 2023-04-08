@@ -1,39 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  setShips,
   setSearchQuery,
   setFilterType,
   setFilterHomePort,
-  setCurrentPage,
+  getShips,
 } from '../store/shipsSlice';
-import { VscListFilter } from 'react-icons/vsc';
-import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 const SearchFilter = () => {
   const [toggle, setToggle] = useState(false);
 
   const dispatch = useDispatch();
 
-  const ships = useSelector((state) => state.ships.ships);
+  const ships = useSelector((state) => state.ship.ships);
+  
   const searchQuery = useSelector(
-    (state) => state.ships.searchQuery
+    (state) => state.ship.searchQuery
   );
   const filterType = useSelector(
-    (state) => state.ships.filterType
+    (state) => state.ship.filterType
   );
   const filterHomePort = useSelector(
-    (state) => state.ships.filterHomePort
+    (state) => state.ship.filterHomePort
   );
 
-  // Fetch data
-  useEffect(() => {
-    fetch('https://api.spacexdata.com/v4/ships')
-      .then((response) => response.json())
-      .then((data) => {
-        dispatch(setShips(data));
-      });
-  }, [dispatch]);
+
 
   const filteredShips = ships.filter(
     (ship) =>

@@ -2,23 +2,11 @@ import { useState } from 'react';
 import SearchFilter from '../components/SearchFilter';
 import ShipsResult from '../components/ShipsResult';
 import { ReactComponent as Filters } from '../assets/filters.svg';
-import Pagination from '../components/Pagination';
-import { useDispatch, useSelector } from 'react-redux';
-import { VscListFilter } from 'react-icons/vsc';
+
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 
 const Home = () => {
   const [toggle, setToggle] = useState(false);
-
-  // Pagination
-  const dispatch = useDispatch();
-  const pageCount = useSelector(
-    (state) => state.ships.currentPage
-  );
-
-  const onChangePage = (number) => {
-    dispatch(setCurrentPage(number));
-  };
 
   return (
     <>
@@ -57,10 +45,6 @@ const Home = () => {
           </ul>
         </div>
       </div>
-      <Pagination
-        value={pageCount}
-        onChangePage={onChangePage}
-      />
     </>
   );
   {

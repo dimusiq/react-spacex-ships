@@ -1,21 +1,29 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getShips } from '../store/shipsSlice';
 
 import ShipItem from './ShipItem';
+import { useEffect } from 'react';
 
 const shipResult = () => {
-  
-  const ships = useSelector((state) => state.ships.ships);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getShips(ships));
+  }, []);
+
+  const { ships } = useSelector((state) => state.ship);
+
   const searchQuery = useSelector(
-    (state) => state.ships.searchQuery
+    (state) => state.ship.searchQuery
   );
   const filterType = useSelector(
-    (state) => state.ships.filterType
+    (state) => state.ship.filterType
   );
   const filterHomePort = useSelector(
-    (state) => state.ships.filterHomePort
+    (state) => state.ship.filterHomePort
   );
 
-  // Filter ships 
+  // Filter ships
   const filteredShips = ships.filter(
     (ship) =>
       ship.name

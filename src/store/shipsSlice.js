@@ -1,15 +1,27 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+} from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
   ships: [],
   searchQuery: '',
   filterType: '',
   filterHomePort: '',
-  pageCount: 1,
-  pageSize: 5,
 };
 
-const shipsSlice = createSlice({
+export const getShips = createAsyncThunk(
+  'ships/getShips',
+  async (_, { rejectWithValue, dispatch }) => {
+    const res = await axios.get(
+      'https://api.spacexdata.com/v4/ships'
+    );
+    dispatch(setShips(res.data));
+  }
+);
+
+const shipSlice = createSlice({
   name: 'ships',
   initialState,
   reducers: {
@@ -25,9 +37,16 @@ const shipsSlice = createSlice({
     setFilterHomePort: (state, action) => {
       state.filterHomePort = action.payload;
     },
-    setCurrentPage: (state, action) => {
-      state.currentPage = action.payload;
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getShips.pending, (state) => {
+        state.fulfilled = true;
+        console.log('pending');
+      })
+      .addCase(getShips.fulfilled, (state, { payload }) => {
+        console.log('fulfilled');
+      });
   },
 });
 
@@ -36,7 +55,6 @@ export const {
   setSearchQuery,
   setFilterType,
   setFilterHomePort,
-  setCurrentPage,
-} = shipsSlice.actions;
+} = shipSlice.actions;
 
-export default shipsSlice.reducer;
+export default shipSlice.reducer;
